@@ -28,7 +28,9 @@ int main(void)
         if (i < 3)      water_level_cm += 0;
         else if (i < 6) water_level_cm += 5;
         else            water_level_cm += 20;
-
+        
+        //add a 2 second delay inebetween messages
+        //
         sleep(2);
     }
 
