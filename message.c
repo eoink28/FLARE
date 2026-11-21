@@ -1,16 +1,33 @@
 #include "message.h"
 
-// rise in cm since the last reading decides the priority
 //
-Priority get_priority(int rise_cm)
+// How far the level is above normal, as a percentage
+int percent_above_normal(int level_cm, int normal_cm)
 {
-    if (rise_cm >= 15) return CRITICAL;
-    if (rise_cm >= 5)  return HIGH;
+    return (level_cm - normal_cm) * 100 / normal_cm;
+}
+
+//
+// Thresholds
+Priority get_priority(int percent_above)
+{
+    if (percent_above >= 65) return CRITICAL;
+    if (percent_above >= 50) return HIGH;
     return ROUTINE;
 }
 
-// converts the enum to text for printing
 //
+// Minutes until the next reading, reads more often as the river rises
+int get_interval(int percent_above)
+{
+    if (percent_above >= 65) return 3;
+    if (percent_above >= 60) return 5;
+    if (percent_above >= 50) return 10;
+    return 15;
+}
+
+//
+// Converts the enum to text for printing
 const char *priority_name(Priority p)
 {
     switch (p)
